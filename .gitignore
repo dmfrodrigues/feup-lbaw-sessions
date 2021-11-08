@@ -12,4 +12,6 @@
 *.fdb_latexmk
 *.bbl
 *.blg
+*.dvi
 .vscode
+svg-inkscape

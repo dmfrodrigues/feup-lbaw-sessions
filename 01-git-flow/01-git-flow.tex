@@ -1,0 +1,248 @@
+% Copyright (C) 2021-2022 Diogo Rodrigues
+% Distributed under the terms of license
+% Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International
+
+\documentclass{beamer}
+% Encodings (to render letters with diacritics and special characters)
+\usepackage[utf8]{inputenc}
+% Language
+\usepackage[english]{babel}
+\usepackage{verbatim}
+
+\usepackage{multicol}
+
+\usepackage{setspace}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\pdfstringdefDisableCommands{
+  \def\\{}
+  \def\texttt#1{<#1>}
+}
+
+\newcommand{\email}[1]{{\footnotesize\texttt{\href{mailto:#1}{#1}}}}
+
+\usepackage{caption}
+\DeclareCaptionFont{black}{\color{black}}
+\DeclareCaptionFormat{listing}{{\tiny \textbf{#1}#2#3}}
+\captionsetup[lstlisting]{format=listing,labelfont=black,textfont=black}
+\usepackage{subfigure}
+
+\usepackage{listings}
+\lstset{
+    frame=tb, % draw frame at top and bottom of the code
+    basewidth  = {0.5em,0.5em},
+    numbers=left, % display line numbers on the left
+    showstringspaces=false, % don't mark spaces in strings  
+    commentstyle=\color{green}, % comment color
+    keywordstyle=\color{blue}, % keyword color
+    stringstyle=\color{red}, % string color
+	aboveskip=-0.2em,
+    belowskip=-0.2em,
+    basicstyle=\tiny
+}
+\lstset{literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {Ã}{{\~A}}1 {ã}{{\~a}}1 {Õ}{{\~O}}1 {õ}{{\~o}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+  {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
+}
+
+\usepackage{dirtree}
+
+\usepackage[style=british]{csquotes}
+
+\usepackage{tabularx}
+
+\usepackage{svg}
+\usepackage{graphicx}
+ 
+%Information to be included in the title page:
+\AtBeginDocument{
+\title[\#1. Git Flow]{Git Flow}
+\subtitle[]{Monitor session \#1}
+\author[Diogo Rodrigues]{
+  Diogo Miguel Ferreira Rodrigues (\email{diogo.rodrigues@fe.up.pt})
+}
+\institute[FEUP/LBAW]{Faculty of Engineering of the University of Porto \\ Database and Web Applications Laboratory (LBAW)}
+\date[10/11/2021]{10th of November, 2021}
+}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}
+  \centering
+
+  As said in the form,
+
+  \vspace{1em}
+
+  {\Large \bfseries You are not required to know this for LBAW}
+
+  \vspace{1em}
+
+  It will just make your life easier
+
+  with some concepts I wish I knew before LBAW
+
+  \vspace{2em}
+
+  This will not help you learn how to use these specific features,
+
+  rather for you to learn which tools are important
+  
+  and how they'll help you during your projects
+\end{frame}
+
+\begin{frame}
+\frametitle{1. Some concepts}
+\framesubtitle{1.1. What is git?}
+
+\begin{minipage}{0.49\textwidth}
+  Git is a version control program.
+  
+  \begin{itemize}
+    \item Track changes in a set of files (a \textit{repository}, or just \textit{repo})
+    \item Collaborate with other people
+  \end{itemize}
+
+\end{minipage}%
+\begin{minipage}{0.51\textwidth}
+  \centering
+  \includesvg[width=40mm]{img/git-logo}
+\end{minipage}
+
+\vspace{2em}
+
+Main points:
+
+\begin{itemize}
+  \item It is just a program in your computer
+  \item There is \textbf{no Internet} in the way git works
+\end{itemize}
+
+Git contains your whole repository, including past versions.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{1. Some concepts}
+\framesubtitle{1.2. What is GitHub/GitLab?}
+
+GitHub is a company that remotely hosts git repositories.
+
+{\footnotesize (\textit{Really? Just that?} Basically yes, although they provide some extra services) }
+
+\vspace{0.5em}
+
+GitLab is essentially the same, but with possibility of deploying your own git hosting server.
+
+\vspace{1em}
+
+\begin{minipage}{0.60\textwidth}
+  \begin{itemize}
+    \item Simplest and most common way to make git distributed and collaborative
+    \item Each remote repository is accessible through a link (\textit{origin})
+    \item To contribute to a repo:
+    \begin{enumerate}
+      \item Clone \includegraphics[height=3mm]{img/upload-download}
+      \item Edit
+      \item Commit
+      \item Push \includegraphics[height=3mm]{img/upload-download}
+    \end{enumerate}
+  \end{itemize}
+\end{minipage}%
+\begin{minipage}{0.40\textwidth}
+  \centering
+  \includegraphics[width=15mm]{img/GitHub-logo}\hspace{0.5em}
+  \includesvg[width=15mm]{img/GitLab-logo}
+\end{minipage}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{1. Some concepts}
+\framesubtitle{1.3. Tags}
+
+A tag is a human-readable name (an alias) for a particular commit.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{1. Some concepts}
+\framesubtitle{1.4. Wiki}
+
+Each project in GitHub is associated to a repository and a wiki.
+
+Some things belong with the code: documentation for instance.
+
+What to place in a wiki? Basically everything that does not belong with the code.
+\begin{itemize}
+  \item Tutorials/guides
+  \item Longer documentation
+  \item Reports on the process of making the project / how the project works
+  \item Website/database architecture
+  \item ...
+\end{itemize}
+
+The wiki is itself a repo: clone it to use your IDE/editor instead of the online editor
+
+\end{frame}
+
+\begin{frame}
+\frametitle{1. Some concepts}
+\framesubtitle{1.5. gitignore}
+
+Don't forget to use a \texttt{.gitignore} file.
+
+Files that match the patterns in the \texttt{.gitignore} file will be ignored by git (e.g. binary files)
+
+\end{frame}
+
+\begin{frame}
+\frametitle{2. Main subjects}
+\framesubtitle{2.1. Branches}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{2. Main subjects}
+\framesubtitle{2.2. Pull requests}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{2. Main subjects}
+\framesubtitle{2.3. Git Flow}
+
+Actually I'll be talking about GitHub flow, a simplification of Git Flow.
+
+\end{frame}  
+
+\begin{frame}
+\frametitle{2. Main subjects}
+\framesubtitle{2.4. Issues}
+
+\end{frame}  
+
+\begin{frame}%[allowframebreaks]
+  \scriptsize
+  \frametitle{Bibliography}
+  \setbeamertemplate{bibliography item}{\insertbiblabel}
+  \bibliographystyle{acm}
+  \bibliography{report}
+\end{frame}
+
+\end{document}
