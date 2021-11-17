@@ -47,8 +47,8 @@ CREATE TABLE "user" (
     - Connection > Host name/address: db.fe.up.pt
     - Connection > Port: 5432
     - Connection > Maintenance database: postgres
-    - Connection > Username: up201906000 (use your student number)
-    - Connection > Password: (use your DB password; this is NOT your Sigarra password)
+    - Connection > Username: lbaw21gg (use your group ID)
+    - Connection > Password: (use your DB password)
 4. Press "Save", and now click the new entry "lbaw-remote"
 5. Go to Servers > lbaw-remote > Databases
 6. You will see an enormous list of databases, most of which you can't double-click; find the one with your group ID `lbaw21gg`; this is your deployment database
@@ -74,31 +74,34 @@ These tables are not yours and were not supposed to be there. We are yet to disc
 ### How to get around this issue
 
 To get around this issue, you should work on a different schema.
-
 In your remote database, create a new schema named after your group ID `lbaw21gg`.
-
-Because you're the single owner of the schema, none of your teammates will be able to use that schema. To allow that, you need to give `CREATE` permissions to your colleagues, by running the following query for each username of your colleagues:
-
-```sql
-GRANT CREATE ON SCHEMA lbaw21gg TO up201906000;
-```
-
-To make the whole process faster, use the following schema creation/authorization template:
-
-```sql
-CREATE SCHEMA IF NOT EXISTS lbaw21gg;
-GRANT CREATE ON SCHEMA lbaw21gg TO up201906000;
-GRANT CREATE ON SCHEMA lbaw21gg TO up201906001;
-GRANT CREATE ON SCHEMA lbaw21gg TO up201906002;
-...
-```
-
-Replace the UP numbers with yours. Note that whoever creates the schema formally does not require to run the `GRANT` command, but to make the same script usable by all group members you should use the `GRANT` instruction for all users (including whoever's the owner), as any member should be able to create a schema that all other members can use.
-
 Now you can create your tables by appending them with `lbaw21gg.`
+
+To create a schema programmatically, use
+
+```sql
+CREATE SCHEMA lbaw21gg;
+```
 
 If you don't want to always type the schema name, you can run the following instruction to change the default schema for your database (so that when you do not specify a schema for your table, PostgreSQL will assume you're talking of a table in schema `lbaw21gg` instead of `public`):
 
 ```sql
 SET search_path TO lbaw21gg;
 ```
+
+## Structured SQL development
+
+- Use different scripts for each task:
+    - One for creating the database schema (`create.sql`)
+    - One for populating the database (`populate.sql`)
+- Do NOT edit tables directly using pgAdmin, it won't end well for you
+
+## PostgreSQL tricks
+
+- Always worth noting: don't use CamelCase because SQL does not really know the difference between uppercase and lowercase identifiers (but it handles string cases fine, the problem is only with SQL identifiers).
+- Some table names can be written without using double quotes. But table names with underscores (which you'll be using a lot) and some other characters mandatorily require double quotes. As a general rule, always use double quotes even if you don't need them.
+- PostgreSQL has much more options than SQLite, like a large set of data types; use it to your advantage
+- If you need dates in your DB (which you probably do):
+    - Use a standardized time zone, like UTC.
+    - Use timestamps without time zone, and always add timestamps to your DB in UTC.
+    - Convert to and from UTC when interacting with DB; in the DB you better keep everything simple and UTC.
