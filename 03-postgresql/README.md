@@ -75,7 +75,7 @@ BEGIN
     );
   END IF;
   IF TG_OP = 'UPDATE' THEN
-      IF (NEW.title <> OLD.title OR NEW.obs <> OLD.text) THEN
+      IF (NEW.title <> OLD.title OR NEW.text <> OLD.text) THEN
         NEW.tsvectors = (
           setweight(to_tsvector('english', NEW.title), 'A') ||
           setweight(to_tsvector('english', NEW.text), 'B')
